@@ -23,7 +23,14 @@ const dummyData = [
   { name: "Jun", value: 23 },
 ];
 
-const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#00C49F", "#FFBB28"];
+const COLORS = [
+  "#8884d8",
+  "#82ca9d",
+  "#ffc658",
+  "#ff8042",
+  "#00C49F",
+  "#FFBB28",
+];
 
 const Widgets = ({ title, description, type = "line" }) => {
   const stats = useMemo(() => {
@@ -87,21 +94,47 @@ const Widgets = ({ title, description, type = "line" }) => {
   };
 
   return (
-    <div className="w-[480px] h-[300px] border border-gray-300 shadow-md rounded-lg p-4 flex">
-      {/* Chart Left */}
-      <div className="flex-1">{renderChart()}</div>
+    <div className="w-[480px] h-[300px] border border-gray-300 shadow-md rounded-lg p-4 flex flex-col">
+      {/* Title and Description */}
+      <div className="mb-4">
+        <h2 className="font-bold text-lg text-gray-800 mb-1">{title}</h2>
+        <p className="italic text-sm text-gray-600">{description}</p>
+      </div>
 
-      {/* Details Right */}
-      <div className="w-1/3 pl-4 flex flex-col justify-center border-l border-gray-200">
-        <p className="font-bold text-lg">{title}</p>
-        <p className="italic text-sm mb-4">{description}</p>
+      {/* Chart and Stats Container */}
+      <div className="flex flex-1">
+        {/* Chart Left */}
+        <div className="flex-1 pr-4">{renderChart()}</div>
 
-        <ul className="text-sm space-y-1 text-gray-700">
-          <li>📊 Total: {stats.total}</li>
-          <li>📈 Max: {stats.max}</li>
-          <li>📉 Min: {stats.min}</li>
-          <li>⚖️ Avg: {stats.avg}</li>
-        </ul>
+        {/* Stats Right */}
+        <div className="w-1/3 pl-4 flex flex-col justify-center border-l border-gray-200">
+          <ul className="text-sm space-y-2 text-gray-700">
+            <li className="flex items-center">
+              <span className="mr-2">📊</span>
+              <span>
+                Total: <strong>{stats.total.toLocaleString()}</strong>
+              </span>
+            </li>
+            <li className="flex items-center">
+              <span className="mr-2">📈</span>
+              <span>
+                Max: <strong>{stats.max.toLocaleString()}</strong>
+              </span>
+            </li>
+            <li className="flex items-center">
+              <span className="mr-2">📉</span>
+              <span>
+                Min: <strong>{stats.min.toLocaleString()}</strong>
+              </span>
+            </li>
+            <li className="flex items-center">
+              <span className="mr-2">⚖️</span>
+              <span>
+                Avg: <strong>{stats.avg.toLocaleString()}</strong>
+              </span>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   );
