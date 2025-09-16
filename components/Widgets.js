@@ -1,0 +1,110 @@
+"use client";
+import React, { useMemo } from "react";
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+
+const dummyData = [
+  { name: "Jan", value: 40 },
+  { name: "Feb", value: 30 },
+  { name: "Mar", value: 20 },
+  { name: "Apr", value: 27 },
+  { name: "May", value: 18 },
+  { name: "Jun", value: 23 },
+];
+
+const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#00C49F", "#FFBB28"];
+
+const Widgets = ({ title, description, type = "line" }) => {
+  const stats = useMemo(() => {
+    const values = dummyData.map((d) => d.value);
+    const total = values.reduce((a, b) => a + b, 0);
+    const avg = (total / values.length).toFixed(2);
+    const max = Math.max(...values);
+    const min = Math.min(...values);
+
+    return { total, avg, max, min };
+  }, []);
+
+  const renderChart = () => {
+    switch (type) {
+      case "line":
+        return (
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={dummyData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Line type="monotone" dataKey="value" stroke="#8884d8" />
+            </LineChart>
+          </ResponsiveContainer>
+        );
+      case "bar":
+        return (
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={dummyData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="value" fill="#82ca9d" />
+            </BarChart>
+          </ResponsiveContainer>
+        );
+      case "pie":
+        return (
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={dummyData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={90}
+                label
+              >
+                {dummyData.map((_, index) => (
+                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        );
+      default:
+        return <p>No chart type selected</p>;
+    }
+  };
+
+  return (
+    <div className="w-[480px] h-[300px] border border-gray-300 shadow-md rounded-lg p-4 flex">
+      {/* Chart Left */}
+      <div className="flex-1">{renderChart()}</div>
+
+      {/* Details Right */}
+      <div className="w-1/3 pl-4 flex flex-col justify-center border-l border-gray-200">
+        <p className="font-bold text-lg">{title}</p>
+        <p className="italic text-sm mb-4">{description}</p>
+
+        <ul className="text-sm space-y-1 text-gray-700">
+          <li>📊 Total: {stats.total}</li>
+          <li>📈 Max: {stats.max}</li>
+          <li>📉 Min: {stats.min}</li>
+          <li>⚖️ Avg: {stats.avg}</li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default Widgets;
