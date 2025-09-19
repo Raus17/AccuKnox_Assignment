@@ -1,4 +1,4 @@
-"use client"; // 👈 this makes it a client component
+"use client";
 
 import { Provider } from "react-redux";
 import { store } from "./store";

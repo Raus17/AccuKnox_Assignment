@@ -32,7 +32,7 @@ const COLORS = [
   "#FFBB28",
 ];
 
-const Widgets = ({ title, description, type = "line" }) => {
+const Widgets = ({ title, description, type }) => {
   const stats = useMemo(() => {
     const values = dummyData.map((d) => d.value);
     const total = values.reduce((a, b) => a + b, 0);
