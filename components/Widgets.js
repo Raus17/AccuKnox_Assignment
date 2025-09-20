@@ -13,6 +13,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { X } from "lucide-react";
 
 const dummyData = [
   { name: "Jan", value: 40 },
@@ -32,7 +33,7 @@ const COLORS = [
   "#FFBB28",
 ];
 
-const Widgets = ({ title, description, type }) => {
+const Widgets = ({ title, description, type, onRemove }) => {
   const stats = useMemo(() => {
     const values = dummyData.map((d) => d.value);
     const total = values.reduce((a, b) => a + b, 0);
@@ -94,7 +95,19 @@ const Widgets = ({ title, description, type }) => {
   };
 
   return (
-    <div className="w-[480px] h-[300px] border border-gray-300 shadow-md rounded-lg p-4 flex flex-col">
+    // Added 'relative' positioning to the parent container
+    <div className="relative w-[480px] h-[300px] border border-gray-300 shadow-md rounded-lg p-4 flex flex-col">
+      {/* Remove button - now properly positioned */}
+      {onRemove && (
+        <button
+          onClick={onRemove}
+          className="absolute top-2 right-2 text-gray-400 hover:text-red-500 transition-colors bg-white rounded-full p-1 shadow-md hover:shadow-lg z-10"
+          title="Remove widget"
+        >
+          <X size={16} />
+        </button>
+      )}
+
       {/* Title and Description */}
       <div className="mb-4">
         <h2 className="font-bold text-lg text-gray-800 mb-1">{title}</h2>
